@@ -71,6 +71,7 @@ void freeStates(State *states[], unsigned int nbStates) {
         free(state->edgesOut);
         free(state);
     }
+    free(states);
 }
 
 /* connectStates(from, to, label) =>
