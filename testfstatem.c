@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
 
     if (strcmp(testName, "freeStates") == 0) {
         State **states = createStates(10);
+
         freeStates(states, 10);
-        
         return EXIT_SUCCESS;
     } else if (strcmp(testName, "createStates") == 0) {
         State **states = createStates(5);
@@ -42,9 +42,39 @@ int main(int argc, char *argv[]) {
         freeStates(states, 5);
         return EXIT_SUCCESS;
     } else if (strcmp(testName, "createMachine") == 0) {
-        return EXIT_FAILURE;
+        char alphabet[] = {'a', 'b'};
+        State **states = createStates(5);
+        unsigned int initialStates[] = {A_STATE};
+        unsigned int finalStates[] = {A_STATE};
+        Machine *machine = createMachine(alphabet, states, 5, initialStates, 1, finalStates, 1);
+
+        if (machine == NULL) {
+            return EXIT_FAILURE;
+        } else if (machine->states != states) {
+            return EXIT_FAILURE;
+        } else if (machine->initialStates != initialStates) {
+            return EXIT_FAILURE;
+        } else if (machine->nbIStates != 1) {
+            return EXIT_FAILURE;
+        } else if (machine->finalStates != finalStates) {
+            return EXIT_FAILURE;
+        } else if (machine->alphabet != alphabet) {
+            return EXIT_FAILURE;
+        }
+
+        freeMachine(machine);
+        freeStates(states, 5);
+        return EXIT_SUCCESS;
     } else if (strcmp(testName, "freeMachine") == 0) {
-        return EXIT_FAILURE;
+        char alphabet[] = {'a', 'b'};
+        State **states = createStates(5);
+        unsigned int initialStates[] = {A_STATE};
+        unsigned int finalStates[] = {A_STATE};
+        Machine *machine = createMachine(alphabet, states, 5, initialStates, 1, finalStates, 1);
+
+        freeMachine(machine);
+        freeStates(states, 5);
+        return EXIT_SUCCESS;
     } else if (strcmp(testName, "connectStates") == 0) {
         return EXIT_FAILURE;
     } else if (strcmp(testName, "computeWord") == 0) {

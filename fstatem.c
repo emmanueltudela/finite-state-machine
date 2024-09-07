@@ -16,9 +16,47 @@
  * Returns the machine constructed on the given alphabet with given states, initialStates and finalStates.
  *
  * initialStates and finalStates must be included in states.
- * initialStates and finalStates cannot be empty.
+ * initialStates, finalStates and states cannot be empty.
  */
-Machine *createMachine(char *alphabet, State *states[], unsigned int numberOfStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates);
+Machine *createMachine(char *alphabet, State *states[], unsigned int nbStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates) {
+    if (states == NULL || nbStates == 0) {
+        return NULL;
+    }
+
+    // initialStates and finalStates not empty
+    if (nbIStates == 0 || nbFStates == 0) {
+        return NULL;
+    }
+    // initialStates and finalStates included in states
+    for (int i = 0; i < nbIStates; i++) {
+        unsigned int initialState = initialStates[i];
+        // initialState must be an int representing a state so
+        //  over 0 and below nbStates
+        if (initialState < 0 || initialState > nbStates)
+            return NULL;
+    }
+    for (int i = 0; i < nbFStates; i++) {
+        unsigned int finalState = finalStates[i];
+        // finalState must be an int representing a state so
+        //  over 0 and below nbStates
+        if (finalState < 0 || finalState > nbStates)
+            return NULL;
+    }
+
+    Machine *machine = malloc(sizeof(Machine));
+    if (machine == NULL) {
+        return NULL;
+    }
+
+    machine->states = states;
+    machine->nbStates = nbStates;
+    machine->initialStates = initialStates;
+    machine->nbIStates = nbIStates;
+    machine->finalStates = finalStates;
+    machine->nbFStates = nbFStates;
+    machine->alphabet = alphabet;
+    return machine;
+}
 
 /* freeMachine(machine) =>
  *
@@ -26,7 +64,9 @@ Machine *createMachine(char *alphabet, State *states[], unsigned int numberOfSta
  *
  * Free the machine.
  */
-void freeMachine(Machine *machine);
+void freeMachine(Machine *machine) {
+    free(machine);
+}
 
 /* createStates(nbStates) =>
  *

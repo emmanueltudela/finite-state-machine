@@ -55,6 +55,7 @@ typedef struct State {
 
 typedef struct Machine {
     State **states;
+    unsigned int nbStates;
     unsigned int *initialStates;
     unsigned int nbIStates;
     unsigned int *finalStates;
