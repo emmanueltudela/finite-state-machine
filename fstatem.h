@@ -33,28 +33,34 @@ enum STATES_NAME {
     W_STATE,
     X_STATE,
     Y_STATE,
-    Z_STATE,
-}
+    Z_STATE
+};
 
 // Structs
 
+// Predifinition
+struct State;
+
 typedef struct Edge {
     char label;
-    SEdge from;
-    SEdge to;
-} *SEdge;
+    struct State *from;
+    struct State *to;
+} Edge;
 
 typedef struct State {
     unsigned int stateId;
-    SEdge *edgesOut; 
-} *SState;
+    Edge **edgesOut;
+    unsigned int nbEdgesOut;
+} State;
 
 typedef struct Machine {
-    SState *states;
+    State **states;
     unsigned int *initialStates;
+    unsigned int nbIStates;
     unsigned int *finalStates;
+    unsigned int nbFStates;
     char *alphabet;
-} *SMachine;
+} Machine;
 
 // Functions
 
@@ -73,7 +79,7 @@ typedef struct Machine {
  * initialStates and finalStates must be included in states.
  * initialStates and finalStates cannot be empty.
  */
-SMachine *createMachine(char *alphabet, SStates *states, unsigned int numberOfStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates);
+Machine *createMachine(char *alphabet, State *states[], unsigned int numberOfStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates);
 
 /* freeMachine(machine) =>
  *
@@ -81,7 +87,7 @@ SMachine *createMachine(char *alphabet, SStates *states, unsigned int numberOfSt
  *
  * Free the machine.
  */
-void freeMachine(SMachine *machine);
+void freeMachine(Machine *machine);
 
 /* createStates(nbStates) =>
  *
@@ -89,7 +95,7 @@ void freeMachine(SMachine *machine);
  *
  * Returns an array with given number of states.
  */
-SState *createStates(int nbStates);
+State **createStates(int nbStates);
 
 /* freeStates(states, nbStates) =>
  *
@@ -98,7 +104,7 @@ SState *createStates(int nbStates);
  *
  * Free every states and the array.
  */
-void freeStates(SState *states, unsigned int nbStates);
+void freeStates(State *states[], unsigned int nbStates);
 
 /* connectStates(from, to, label) =>
  *
@@ -106,7 +112,7 @@ void freeStates(SState *states, unsigned int nbStates);
  *
  * label must be included in given alphabet.
  */
-int connectStates(SState *states, char *alphabet, unsigned int fromState, unsigned int toState, char label);
+int connectStates(State *states[], char *alphabet, unsigned int fromState, unsigned int toState, char label);
 
 /* computeWord(machine, word) =>
  *
@@ -114,6 +120,6 @@ int connectStates(SState *states, char *alphabet, unsigned int fromState, unsign
  *
  * word must be made with characters from the alphabet used in machine.
  */
-bool computeWord(SMachine *machine, char *word);
+bool computeWord(Machine *machine, char *word);
 
 #endif
