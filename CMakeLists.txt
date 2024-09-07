@@ -20,3 +20,8 @@ add_executable(testfstatem testfstatem.c)
 target_link_libraries(testfstatem fstatem)
 
 add_test(NAME freeStates COMMAND ./testfstatem freeStates)
+add_test(NAME createStates COMMAND ./testfstatem createStates)
+add_test(NAME createMachine COMMAND ./testfstatem createMachine)
+add_test(NAME freeMachine COMMAND ./testfstatem freeMachine)
+add_test(NAME connectStates COMMAND ./testfstatem connectStates)
+add_test(NAME computeWord COMMAND ./testfstatem computeWord)

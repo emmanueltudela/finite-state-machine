@@ -24,7 +24,31 @@ int main(int argc, char *argv[]) {
         
         return EXIT_SUCCESS;
     } else if (strcmp(testName, "createStates") == 0) {
-        // TO DO
+        State **states = createStates(5);
+
+        for (int i = 0; i < 5; i++) {
+            State *state = states[i];
+            if (state == NULL) {
+                return EXIT_FAILURE;
+            }
+            if (state->stateId != i) {
+                return EXIT_FAILURE;
+            }
+            if (state->nbEdgesOut != 0 || state->edgesOut != NULL) {
+                return EXIT_FAILURE;
+            }
+        }
+
+        freeStates(states, 5);
+        return EXIT_SUCCESS;
+    } else if (strcmp(testName, "createMachine") == 0) {
+        return EXIT_FAILURE;
+    } else if (strcmp(testName, "freeMachine") == 0) {
+        return EXIT_FAILURE;
+    } else if (strcmp(testName, "connectStates") == 0) {
+        return EXIT_FAILURE;
+    } else if (strcmp(testName, "computeWord") == 0) {
+        return EXIT_FAILURE;
     }
 
     return EXIT_FAILURE;
