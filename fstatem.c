@@ -81,8 +81,16 @@ State **createStates(int nbStates) {
     }
 
     State **states = malloc(nbStates * sizeof(State *));
+    if (states == NULL) {
+        return NULL;
+    }
+
     for (int i = 0; i < nbStates; i++) {
         states[i] = malloc(sizeof(State));
+        if (states[i] == NULL) {
+            free(states);
+            return NULL;
+        }
         states[i]->stateId = i;
         states[i]->edgesOut = NULL;
         states[i]->nbEdgesOut = 0;
