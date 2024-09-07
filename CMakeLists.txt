@@ -8,6 +8,10 @@ include_directories($CMAKE_CURRENT_SOURCE_DIR)
 # Compile library for easy use
 add_library(fstatem fstatem.c)
 
-# Main executable to test
+# Main executable for debugging
 add_executable(main main.c)
 target_link_libraries(main fstatem)
+
+# Main executable to test libfstatem
+add_executable(testfstatem testfstatem.c)
+target_link_libraries(testfstatem fstatem)
