@@ -60,6 +60,7 @@ typedef struct Machine {
     unsigned int *finalStates;
     unsigned int nbFStates;
     char *alphabet;
+    unsigned int alphabetSize;
 } Machine;
 
 // Functions
@@ -79,7 +80,7 @@ typedef struct Machine {
  * initialStates and finalStates must be included in states.
  * initialStates and finalStates cannot be empty.
  */
-Machine *createMachine(char *alphabet, State *states[], unsigned int numberOfStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates);
+Machine *createMachine(char *alphabet, unsigned int alphabetSize, State *states[], unsigned int numberOfStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates);
 
 /* freeMachine(machine) =>
  *
@@ -112,7 +113,7 @@ void freeStates(State *states[], unsigned int nbStates);
  *
  * label must be included in given alphabet.
  */
-int connectStates(State *states[], char *alphabet, unsigned int fromState, unsigned int toState, char label);
+int connectStates(State *states[], char *alphabet, unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label);
 
 /* computeWord(machine, word) =>
  *

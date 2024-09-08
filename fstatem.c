@@ -3,9 +3,10 @@
 
 #include "fstatem.h"
 
-/* createMachine(alphabet, states, nbStates, initialStates, nbIStates, finalStates, nbFStates) =>
+/* createMachine(alphabet, alphabetSize, states, nbStates, initialStates, nbIStates, finalStates, nbFStates) =>
  *
  * alphabet -> alphabet on which the machine is made
+ * alphabetSize -> number of chars in alphabet
  * states -> array of states in the machine
  * nbStates -> number of states in the machine
  * initialStates -> array of initialStates ids
@@ -18,7 +19,7 @@
  * initialStates and finalStates must be included in states.
  * initialStates, finalStates and states cannot be empty.
  */
-Machine *createMachine(char *alphabet, State *states[], unsigned int nbStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates) {
+Machine *createMachine(char *alphabet, unsigned int alphabetSize, State *states[], unsigned int nbStates, unsigned int *initialStates, unsigned int nbIStates, unsigned int *finalStates, unsigned int nbFStates) {
     if (states == NULL || nbStates == 0) {
         return NULL;
     }
@@ -55,6 +56,7 @@ Machine *createMachine(char *alphabet, State *states[], unsigned int nbStates, u
     machine->finalStates = finalStates;
     machine->nbFStates = nbFStates;
     machine->alphabet = alphabet;
+    machine->alphabetSize = alphabetSize;
     return machine;
 }
 
@@ -122,13 +124,20 @@ void freeStates(State *states[], unsigned int nbStates) {
     free(states);
 }
 
-/* connectStates(from, to, label) =>
+/* connectStates(states, alphabet, alphabetSize, fromState, toState, label) =>
+ *
+ * states -> collection of states
+ * alphabet -> alphabet on which the machine is built
+ * alphabetSize -> number of chars in alphabet
+ * fromState -> id of the state where the connexion is coming
+ * toState -> id of the state where the connexion is going
+ * label -> label of the connexion
  *
  * Creates an edge in fromState pointing towards toState with the given label.
  *
  * label must be included in given alphabet.
  */
-int connectStates(State *states[], char *alphabet, unsigned int fromState, unsigned int toState, char label) {
+int connectStates(State *states[], char *alphabet, unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label) {
     return 0;
 }
 
@@ -138,4 +147,6 @@ int connectStates(State *states[], char *alphabet, unsigned int fromState, unsig
  *
  * word must be made with characters from the alphabet used in machine.
  */
-bool computeWord(Machine *machine, char *word);
+bool computeWord(Machine *machine, char *word) {
+    return false;
+}
