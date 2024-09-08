@@ -138,6 +138,7 @@ void freeStates(State *states[], unsigned int nbStates) {
  * label must be included in given alphabet.
  */
 int connectStates(State *states[], char *alphabet, unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label) {
+    // Commentaire test
     return 0;
 }
 
