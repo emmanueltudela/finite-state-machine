@@ -43,7 +43,6 @@ struct State;
 
 typedef struct Edge {
     char label;
-    struct State *from;
     struct State *to;
 } Edge;
 

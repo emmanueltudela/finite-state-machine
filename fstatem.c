@@ -128,7 +128,9 @@ void freeStates(State *states[], unsigned int nbStates) {
  *
  * label must be included in given alphabet.
  */
-int connectStates(State *states[], char *alphabet, unsigned int fromState, unsigned int toState, char label);
+int connectStates(State *states[], char *alphabet, unsigned int fromState, unsigned int toState, char label) {
+    return 0;
+}
 
 /* computeWord(machine, word) =>
  *
