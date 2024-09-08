@@ -107,13 +107,22 @@ State **createStates(int nbStates);
  */
 void freeStates(State *states[], unsigned int nbStates);
 
-/* connectStates(from, to, label) =>
+/* connectStates(states, nbStates, alphabet, alphabetSize fromState, toState, label) =>
+ *
+ * states -> collection of all the states in the machine
+ * nbStates -> number of states in the collection
+ * alphabet -> alphabet on which the machine is built
+ * alphabetSize -> number of chars in the given alphabet
+ * fromState -> connexion is coming from this state
+ * toState -> connexion is going to this state
+ * label -> connexion has this label
  *
  * Creates an edge in fromState pointing towards toState with the given label.
  *
+ * fromState and toState must be in states
  * label must be included in given alphabet.
  */
-int connectStates(State *states[], char *alphabet, unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label);
+int connectStates(State *states[], unsigned int nbStates, char alphabet[], unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label);
 
 /* computeWord(machine, word) =>
  *

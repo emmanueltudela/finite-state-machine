@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "fstatem.h"
 
@@ -124,9 +125,10 @@ void freeStates(State *states[], unsigned int nbStates) {
     free(states);
 }
 
-/* connectStates(states, alphabet, alphabetSize, fromState, toState, label) =>
+/* connectStates(states, nbStates, alphabet, alphabetSize, fromState, toState, label) =>
  *
  * states -> collection of states
+ * nbStates -> number of states in states
  * alphabet -> alphabet on which the machine is built
  * alphabetSize -> number of chars in alphabet
  * fromState -> id of the state where the connexion is coming
@@ -137,9 +139,52 @@ void freeStates(State *states[], unsigned int nbStates) {
  *
  * label must be included in given alphabet.
  */
-int connectStates(State *states[], char *alphabet, unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label) {
-    // Commentaire test
-    return 0;
+int connectStates(State *states[], unsigned int nbStates, char alphabet[], unsigned int alphabetSize, unsigned int fromState, unsigned int toState, char label) {
+    if (states == NULL) {
+        return -1;
+    }
+
+    // Check that the label is in alphabet
+    for (int i = 0; i < alphabetSize; i++) {
+        if (alphabet[i] == label) {
+            break;
+        }
+        if (i == alphabetSize - 1) {
+            return -1;
+        }
+    }
+
+    // Check that fromState and toState are in the states collection
+    // Since fromState and toState are integers representing the location in states
+    // they must be greater than 0 and below the max nbStates
+    if (fromState < 0 || fromState >= nbStates || toState < 0 || toState >= nbStates) {
+        return -1;
+    }
+
+    State *stateFrom = states[fromState];
+    State *stateTo = states[toState];
+
+    // Expend the array of edgesOut in stateFrom by one and copy the last array
+    size_t newNbEdgesOut = stateFrom->nbEdgesOut + 1;
+    Edge **newEdgesOut = malloc(newNbEdgesOut * sizeof(Edge *));
+    // Failed malloc
+    if (newEdgesOut == NULL)
+        return -1;
+    memcpy(newEdgesOut, stateFrom->edgesOut, stateFrom->nbEdgesOut * sizeof(Edge *));
+
+    // Free unupdated array
+    free(stateFrom->edgesOut);
+
+    // Reassign the new edgesOut array
+    stateFrom->edgesOut = newEdgesOut;
+
+    // Append a new Edge
+    unsigned int lastIndex = newNbEdgesOut - 1;
+    stateFrom->nbEdgesOut += 1;
+    stateFrom->edgesOut[lastIndex] = malloc(sizeof(Edge));
+    stateFrom->edgesOut[lastIndex]->to = stateTo;
+    stateFrom->edgesOut[lastIndex]->label = label;
+    return 1;
 }
 
 /* computeWord(machine, word) =>

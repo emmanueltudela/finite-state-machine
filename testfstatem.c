@@ -155,33 +155,39 @@ int main(int argc, char *argv[]) {
             return EXIT_FAILURE;
 
         // No error, should work, error if not
-        int res = connectStates(states, alphabet, 2, A_STATE, A_STATE, 'a'); 
-        if (res == -1)
+        int res = connectStates(states, 5, alphabet, 2, A_STATE, A_STATE, 'a'); 
+        if (res == -1) {
+            fprintf(stderr, "Working case\n");
             return EXIT_FAILURE;
+        }
 
         // Check that the connexion is there
-        if (states[A_STATE]->edgesOut[0]->to != states[B_STATE])
+        if (states[A_STATE]->edgesOut[0]->to != states[A_STATE] ||
+            states[A_STATE]->edgesOut[0]->label != 'a' ||
+            states[A_STATE]->nbEdgesOut != 1) {
+            fprintf(stderr, "Invalid copy to new edge\n");
             return EXIT_FAILURE;
-        if (states[A_STATE]->edgesOut[0]->label != 'a')
-            return EXIT_FAILURE;
-        if (states[A_STATE]->nbEdgesOut != 1)
-            return EXIT_FAILURE;
+        }
         
         // Error, Z_STATE isn't in the states list
-        res = connectStates(states, alphabet, 2, A_STATE, Z_STATE, 'a');
-        if (res != -1)
+        res = connectStates(states, 5, alphabet, 2, A_STATE, Z_STATE, 'a');
+        if (res != -1) {
+            fprintf(stderr, "Connexion is going to invalid State\n");
             return EXIT_FAILURE;
+        }
 
         // Error, 'z' isn't in the given alphabet
-        res = connectStates(states, alphabet, 2, A_STATE, C_STATE, 'z');
-        if (res != -1)
+        res = connectStates(states, 5, alphabet, 2, A_STATE, C_STATE, 'z');
+        if (res != -1) {
+            fprintf(stderr, "label isn't in the alphabet");
             return EXIT_FAILURE;
+        }
         
         freeMachine(machine);
         freeStates(states, 5);
         return EXIT_SUCCESS;
     } else if (strcmp(testName, "computeWord") == 0) {
-        char alphabet[] = {'a', 'b'};
+        char alphabet[] = {'a', 'b', 'c'};
 
         State **states = createStates(2);
         if (states == NULL)
@@ -189,23 +195,50 @@ int main(int argc, char *argv[]) {
 
         unsigned int initialStates[] = {A_STATE};
         unsigned int finalStates[] = {B_STATE};
-        Machine *machine = createMachine(alphabet, 2, states, 2, initialStates, 1, finalStates, 1);
+        Machine *machine = createMachine(alphabet, 3, states, 2, initialStates, 1, finalStates, 1);
         // Should work
         if (machine == NULL)
             return EXIT_FAILURE;
         return EXIT_FAILURE;
 
         // Connect the final state machine
-        int res = connectStates(states, alphabet, 2, A_STATE, B_STATE, 'b');
+        int res = connectStates(states, 2, alphabet, 3, A_STATE, B_STATE, 'b');
         if (res == -1)
             return EXIT_FAILURE;
 
-        res = connectStates(states, alphabet, 2, B_STATE, B_STATE, 'a');
+        res = connectStates(states, 2, alphabet, 3, B_STATE, B_STATE, 'a');
+        if (res == -1)
+            return EXIT_FAILURE;
 
-        // Test accepted word
-        
+        res = connectStates(states, 2, alphabet, 3, B_STATE, A_STATE, 'c');
+        if (res == -1)
+            return EXIT_FAILURE;
+
+        // Test accepted words
+        bool acc = computeWord(machine, "b");
+        if (!acc)
+            return EXIT_FAILURE;
+        acc = computeWord(machine, "ba");
+        if (!acc)
+            return EXIT_FAILURE;
+        acc = computeWord(machine, "baa");
+        if (!acc)
+            return EXIT_FAILURE;
+        acc = computeWord(machine, "baacba");
+        if (!acc)
+            return EXIT_FAILURE;
 
         // Test refused word
+        acc = computeWord(machine, "a");
+        if (acc)
+            return EXIT_FAILURE;
+        acc = computeWord(machine, "bac");
+        if (acc)
+            return EXIT_FAILURE;
+
+        freeMachine(machine);
+        freeStates(states, 2);
+        return EXIT_SUCCESS;
     }
 
     return EXIT_FAILURE;

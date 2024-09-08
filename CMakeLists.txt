@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-set(CMAKE_C_FLAGS "-std=c99 -Wall -g -O3")
+set(CMAKE_C_FLAGS "-std=c99 -Wall -g -O3 -flarge-source-files")
 
 # Configure project and include dir
 project(finite-state-machine)
