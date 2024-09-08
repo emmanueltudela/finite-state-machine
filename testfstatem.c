@@ -199,7 +199,6 @@ int main(int argc, char *argv[]) {
         // Should work
         if (machine == NULL)
             return EXIT_FAILURE;
-        return EXIT_FAILURE;
 
         // Connect the final state machine
         int res = connectStates(states, 2, alphabet, 3, A_STATE, B_STATE, 'b');
@@ -213,6 +212,8 @@ int main(int argc, char *argv[]) {
         res = connectStates(states, 2, alphabet, 3, B_STATE, A_STATE, 'c');
         if (res == -1)
             return EXIT_FAILURE;
+
+        printf("No error connecting graph\n");
 
         // Test accepted words
         bool acc = computeWord(machine, "b");

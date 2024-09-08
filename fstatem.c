@@ -187,12 +187,62 @@ int connectStates(State *states[], unsigned int nbStates, char alphabet[], unsig
     return 1;
 }
 
+/* computeWordAux(machine, currentState, word) =>
+ *
+ * machine -> machine which the word will go through
+ * currentState -> current state id the word is in
+ * word -> word part remaining to be processed
+ *
+ * Returns whether or not the remaining word part can go through the machine from it's current state.
+ */
+bool computeWordAux(Machine *machine, unsigned int currentState, char *word) {
+    if (machine == NULL || word == NULL)
+        return false;
+
+    if (*word == '\0') {
+        // Check that the word is in finalState
+        for (int i = 0; i < machine->nbFStates; i++) {
+            if (currentState == machine->finalStates[i])
+                return true;
+        }
+    }
+
+    // Check if there is a next state corresponding to the first char of our word
+    // if not the word can't be processed if yes then continue exploring.
+    State *state = machine->states[currentState];
+    Edge **edgesOut = state->edgesOut;
+    for (int i = 0; i < state->nbEdgesOut; i++) {
+        Edge *edge = edgesOut[i];
+        if (edge->label == *word) {
+            if (computeWordAux(machine, edge->to->stateId, ++word))
+                return true;
+        }
+    }
+
+    return false;
+}
+
 /* computeWord(machine, word) =>
  *
  * Returns wether or not word is accepted by the given machine.
- *
- * word must be made with characters from the alphabet used in machine.
  */
 bool computeWord(Machine *machine, char *word) {
+    if (machine == NULL || word == NULL)
+        return false;
+
+    // Find initialState
+    unsigned int *initialStates = machine->initialStates;
+    for (int i = 0; i < machine->nbIStates; i++) {
+        State *initialState = machine->states[initialStates[i]];
+        Edge **edgesOut = initialState->edgesOut;
+        for (int i = 0; i < initialState->nbEdgesOut; i++) {
+            Edge *edge = edgesOut[i];
+            if (edge->label == *word) {
+                if (computeWordAux(machine, edge->to->stateId, ++word))
+                    return true;
+            }
+        }
+    }
+
     return false;
 }
