@@ -1,0 +1,7 @@
+// Check connexité
+// Check determinisme
+// Check complétude
+
+// Return Regular expression
+// Intersection de deux automates
+// Union de deux automates
