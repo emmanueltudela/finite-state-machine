@@ -1,3 +1,5 @@
+// ConnectEdges cannot create an edge that already exist
+
 // Check connexité
 // Check determinisme
 // Check complétude
